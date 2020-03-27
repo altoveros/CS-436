@@ -9,7 +9,7 @@ RRTable = {
         "Value": "144.37.5.45",
         "TTL": "",
         "Static" : "1"
-        }
+        },
     "number2":
     {
         "TransactionID": "2",
@@ -18,7 +18,7 @@ RRTable = {
         "Value": "144.37.5.117",
         "TTL": "",
         "Static" : "1"
-        }
+        },
     "number3":
     {
         "TransactionID": "3",
@@ -27,7 +27,7 @@ RRTable = {
         "Value": "cc.csusm.edu",
         "TTL": "",
         "Static" : "1"
-        }
+        },
     "number4":
     {
         "TransactionID": "4",
@@ -36,7 +36,7 @@ RRTable = {
         "Value": "144.37.5.118",
         "TTL": "",
         "Static" : "1"
-        }
+        },
     "number5":
     {
         "TransactionID": "5",
@@ -45,7 +45,7 @@ RRTable = {
         "Value": "144.37.5.150",
         "TTL": "",
         "Static" : "1"
-        }
+        },
     "number6":
     {
         "TransactionID": "6",
@@ -54,7 +54,7 @@ RRTable = {
         "Value": "dns.qualcomm.com",
         "TTL": "",
         "Static" : "1"
-        }
+        },
     "number7":
     {
         "TransactionID": "7",
