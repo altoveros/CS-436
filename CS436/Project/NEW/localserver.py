@@ -75,13 +75,18 @@ serverSocket.bind(('', serverPort))
 print ('The server is ready to receive')
 while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
+    DNSQuery, clientAddress = serverSocket.recvfrom(2048)
     modifiedMessage = message.decode()
-    #print(modifiedMessage)
+    DNSModified = DNSQuery.decode()
+    print(DNSModified)
+    print(modifiedMessage)
     for item in RRTable.values():
-        if(item['Name'] == modifiedMessage):
+        if(item['Name'] == modifiedMessage and item['Type'] == DNSModified):
             print("Name Found! It's value is " + item['Value'])
             modifiedMessage = item['Value']
             print("It is now modified " + modifiedMessage)
+        else:
+            serverSocket.sendto(modifiedMessage.encode(), ('qualcommserver', 21000))
             
 
     
