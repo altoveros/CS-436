@@ -28,8 +28,18 @@ serverSocket.bind(('', serverPort))
 print ('The server is ready to receive')
 while 1:
     message, localserverAddress = serverSocket.recvfrom(2048)
+    DNSQuery, localserverAddress = serverSocket.recvfrom(2048)
     modifiedMessage = message.decode()
-    print(modifiedMessage)
+    DNSModified = DNSQuery.decode()
+    print("I have received a request from the local server, retrieving " + modifiedMessage + " ....")
+    for item in qualcommRRTable.values():
+        if(item['Name'] == modifiedMessage and item['Type'] == DNSModified):
+            print("Name found! It's value is " + item['Value'])
+            modifiedMessage = item['Value']
+            print("it is now modified " + modifiedMessage)
+
+
+    serverSocket.sendto(modifiedMessage.encode(), localserverAddress)
 
 
     serverSocket.sendto(modifiedMessage.encode(), localserverAddress)
