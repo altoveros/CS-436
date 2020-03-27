@@ -23,7 +23,7 @@ def changeCount(n):
     global count
     count += n
 
-def countdown(Table,count):
+def countdown(Table):
     t = 5
     while t:       
         time.sleep(1)
@@ -67,7 +67,7 @@ while Flag:
             print(DNSResponse.decode())
             newV = RRValues(name,DNSQuery,DNSResponse.decode(),5,1)
             RRTable.append(newV)
-            x = threading.Thread(target=countdown, args=(RRTable[count],count))
+            x = threading.Thread(target=countdown, args=(RRTable[count],))
             x.start()
             changeCount(1)
 
