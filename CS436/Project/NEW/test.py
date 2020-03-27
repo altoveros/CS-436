@@ -58,8 +58,8 @@ while Flag:
             
         else:
             clientSocket.sendto(name.encode(), (serverName, serverPort))
+            clientSocket.sendto(DNSQuery.encode(), (serverName, serverPort))
             DNSResponse, serverAddress = clientSocket.recvfrom(2048)
-            print(DNSResponse.decode())
             newV = RRValues(name,DNSQuery,DNSResponse.decode(),60,1)
             RRTable.insert(count,newV)
             x = threading.Thread(target=countdown, args=(RRTable[count],count,))
