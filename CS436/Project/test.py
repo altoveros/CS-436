@@ -1,5 +1,4 @@
 from socket import *
-import numpy as np
 
   clientSocket = socket(AF_INET, SOCK_DGRAM)
 
