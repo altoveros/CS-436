@@ -1,4 +1,15 @@
 from socket import *
+import time
+import logging
+import threading
+
+class RRValues:
+    def __init__(self,name,htype,value,ttl,static):
+        self.name = name
+        self.htype = htype
+        self.value = value
+        self.ttl = ttl
+        self.static = static
 
 RRTable = {
     "number1":
@@ -66,20 +77,41 @@ RRTable = {
         }
     }
 
-
 count = 0
+tempRR = []
+
+def changeCount(n):
+    global count
+    count += n
+
+def contains(sName):
+    return False
+    for x in range(len(RRTable)):
+        if tempRR[x].name == sName:
+            return True
+    return False
+
+def countdown(Table):
+    t = 60
+    while t:       
+        time.sleep(1)
+        Table.ttl = t
+        t -= 1
+    tempRR.pop(0)
+    changeCount(-1)
+    return
+
 serverPort = 15000
 serverSocket = socket(AF_INET, SOCK_DGRAM)
 serverSocket.bind(('', serverPort))
 print ('The server is ready to receive')
 while 1:
-    while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
     DNSQuery, clientAddress = serverSocket.recvfrom(2048)
     modifiedMessage = message.decode()
     DNSModified = DNSQuery.decode()
     Flag = True
-    for item in RRTable.values():
+    for item in RRTables.values():
         if(item['Name'] == modifiedMessage and item['Type'] == DNSModified):
             print("Name Found! It's value is " + item['Value'])
             modifiedMessage = item['Value']
@@ -91,7 +123,7 @@ while 1:
             print(modifiedMessage + " already exists, here is the current table")
             print("\n")
             print("Name\t\tType\t\tValue\t\tTTL\t\tStatic")
-            for x in range(len(RRTable)):
+            for x in range(len(tempRR)):
                 print(tempRR[x].name +  "\t\t" + tempRR[x].htype + "\t\t" + tempRR[x].value +'\t\t' + str(tempRR[x].ttl))
         else:
             print(modifiedMessage + " does not exist in local server table, checking other servers...")
@@ -106,5 +138,3 @@ while 1:
             changeCount(1)
             modifiedMessage = DNSResponse.decode()
     serverSocket.sendto(modifiedMessage.encode(), clientAddress)
-
-    
