@@ -75,4 +75,7 @@ print ('The server is ready to receive')
 while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
     modifiedMessage = message.decode().upper()
+    for key, ip in RRTable.items():
+        if RRTable[key].Name == message:
+            modifiedMessage = RRTable[key].Value
     serverSocket.sendto(modifiedMessage.encode(), clientAddress)
