@@ -86,7 +86,7 @@ def changeCount(n):
 
 def contains(sName):
     return False
-    for x in range(len(RRTable)):
+    for x in range(len(tempRR)):
         if tempRR[x].name == sName:
             return True
     return False
@@ -111,7 +111,7 @@ while 1:
     modifiedMessage = message.decode()
     DNSModified = DNSQuery.decode()
     Flag = True
-    for item in RRTables.values():
+    for item in RRTable.values():
         if(item['Name'] == modifiedMessage and item['Type'] == DNSModified):
             print("Name Found! It's value is " + item['Value'])
             modifiedMessage = item['Value']
