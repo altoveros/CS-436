@@ -67,7 +67,7 @@ RRTable = {
     }
 
 
-
+count = 0
 serverPort = 15000
 serverSocket = socket(AF_INET, SOCK_DGRAM)
 serverSocket.bind(('', serverPort))
@@ -84,9 +84,19 @@ while 1:
             print("Name Found! It's value is " + item['Value'])
             modifiedMessage = item['Value']
             print("It is now modified " + modifiedMessage)
+            break
         else:
             print(modifiedMessage + " does not exist in local server table, checking other servers...")
             serverSocket.sendto(modifiedMessage.encode(), ('localhost', 21000))
             serverSocket.sendto(DNSModified.encode(), ('localhost', 21000))
-    
+
+            newMsg, clientAddress = serverSocket.recvfrom(2048)
+            modifiedMessage.decode()
+            
+            break
+            
+
+        
     serverSocket.sendto(modifiedMessage.encode(), clientAddress)
+
+    
