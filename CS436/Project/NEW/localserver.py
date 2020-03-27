@@ -68,8 +68,7 @@ RRTable = {
 
 
 
-
-serverPort = 12000
+serverPort = 15000
 serverSocket = socket(AF_INET, SOCK_DGRAM)
 serverSocket.bind(('', serverPort))
 print ('The server is ready to receive')
@@ -85,9 +84,9 @@ while 1:
             print("Name Found! It's value is " + item['Value'])
             modifiedMessage = item['Value']
             print("It is now modified " + modifiedMessage)
-        else:
-            serverSocket.sendto(modifiedMessage.encode(), ('qualcommserver', 21000))
-            
-
+        elif(item['Type'] != DNSModified):
+            print(modifiedMessage + " does not exist in local server table, checking other servers...")
+            serverSocket.sendto(modifiedMessage.encode(), ('localhost', 21000))
+            serverSocket.sendto(DNSModified.encode(), ('localhost', 21000))
     
     serverSocket.sendto(modifiedMessage.encode(), clientAddress)
