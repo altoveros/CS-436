@@ -24,7 +24,7 @@ def changeCount(n):
     count += n
 
 def countdown(Table):
-    t = 5
+    t = 60
     while t:       
         time.sleep(1)
         Table.ttl = t
@@ -65,7 +65,7 @@ while Flag:
             clientSocket.sendto(DNSQuery.encode(), (serverName, serverPort))
             DNSResponse, serverAddress = clientSocket.recvfrom(2048)
             print(DNSResponse.decode())
-            newV = RRValues(name,DNSQuery,DNSResponse.decode(),5,1)
+            newV = RRValues(name,DNSQuery,DNSResponse.decode(),60,1)
             RRTable.append(newV)
             x = threading.Thread(target=countdown, args=(RRTable[count],))
             x.start()
