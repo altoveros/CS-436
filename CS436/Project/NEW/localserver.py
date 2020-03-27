@@ -80,7 +80,7 @@ while 1:
     DNSModified = DNSQuery.decode()
     Flag = True
     for item in RRTable.values():
-        if(item['Name'] == modifiedMessage and item['Type'] == DNSModified and item['Type'] != 'NS'):
+        if(item['Name'] == modifiedMessage and item['Type'] == DNSModified):
             print("Name Found! It's value is " + item['Value'])
             modifiedMessage = item['Value']
             print("It is now modified " + modifiedMessage)
