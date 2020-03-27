@@ -84,7 +84,7 @@ while 1:
             print("Name Found! It's value is " + item['Value'])
             modifiedMessage = item['Value']
             print("It is now modified " + modifiedMessage)
-        elif(item['Type'] != DNSModified):
+        else:
             print(modifiedMessage + " does not exist in local server table, checking other servers...")
             serverSocket.sendto(modifiedMessage.encode(), ('localhost', 21000))
             serverSocket.sendto(DNSModified.encode(), ('localhost', 21000))
