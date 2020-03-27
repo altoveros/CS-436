@@ -13,28 +13,27 @@ class RRValues:
         self.ttl = ttl
         self.static = static
 
-RRTable = []
-
 Flag = True
 
 count = 0
 
-def countdown(num):
-    print('In countdown')
+def countdown(Table,num):
     t = 60
     while t:       
         time.sleep(1)
-        RRTable[num].ttl = t
+        Table.ttl = t
         t -= 1
-    RRTable.pop(num)
+    RRTable.pop(0)
     count -= 1
 
 def contains(sName):
-    print(len(RRTable))
     for x in range(len(RRTable)):
-        if RRTable[x].name is sName:
+        if RRTable[x].name == sName:
+            print('Its true')
             return True
     return False
+
+RRTable = []
 
 while Flag:
     
@@ -51,8 +50,8 @@ while Flag:
             print(name + " already exists, here is the current table")
             print("\n")
             print("Name\t\tType\t\tValue\t\tTTL\t\tStatic")
-            for x in range(count):
-                print(RRTable[x].name +  "\t\t" + RRTable[x].htype + "\t\t" + RRTable[x].value +'\t\t' + RRTable[x].ttl)
+            for x in range(len(RRTable)):
+                print(RRTable[x].name +  "\t\t" + RRTable[x].htype + "\t\t" + RRTable[x].value +'\t\t' + str(RRTable[x].ttl))
                          
             
         else:
@@ -61,8 +60,7 @@ while Flag:
             print(DNSResponse.decode())
             newV = RRValues(name,DNSQuery,DNSResponse.decode(),60,1)
             RRTable.insert(count,newV)
-            print(len(RRTable))
-            x = threading.Thread(target=countdown, args=(count,))
+            x = threading.Thread(target=countdown, args=(RRTable[count],count,))
             x.start()
             count += 1
 
