@@ -1,8 +1,8 @@
 from socket import *
 
 
-serverName = 'localserver'
-serverPort = 15000
+serverName = 'localhost'
+serverPort = 12000
 clientSocket = socket(AF_INET, SOCK_DGRAM)
 
 RRTableName = []
@@ -24,7 +24,7 @@ while Flag:
     if name == "exit":
         Flag = False
     else:
-        DNSQuery = input('Enter the type of DNS query (0. A, 1. AAAA, 2. CNAME, 3. NS: ')
+        DNSQuery = input('Enter the type of DNS query (0. A, 1. AAAA, 2. CNAME, 3. NS: )')
 
         # Check to see if the name is already in the dictionary.
         if name in RRTableName:
@@ -41,5 +41,6 @@ while Flag:
             clientSocket.sendto(name.encode(), (serverName, serverPort))
             DNSResponse, serverAddress = clientSocket.recvfrom(2048)
             print(DNSResponse.decode())
-            print('{the_name} has been added.'.format(the_name = name))
 
+            #print('{the_name} has been added.'.format(the_name = name))
+clientSocket.close()
