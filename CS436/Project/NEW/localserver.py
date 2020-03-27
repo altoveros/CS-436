@@ -77,13 +77,13 @@ while 1:
     DNSQuery, clientAddress = serverSocket.recvfrom(2048)
     modifiedMessage = message.decode()
     DNSModified = DNSQuery.decode()
-    print(DNSModified)
-    print(modifiedMessage)
+    print("Received domain name: " + modifiedMessage)
+    print("Received DNS Type: " + DNSModified)
     for item in RRTable.values():
         if(item['Name'] == modifiedMessage and item['Type'] == DNSModified):
             print("Name Found! It's value is " + item['Value'])
             modifiedMessage = item['Value']
-            print("It is now modified " + modifiedMessage)
+            print("It is now modified, returning value: " + modifiedMessage)
             break
         else:
             print(modifiedMessage + " does not exist in local server table, checking other servers...")
@@ -91,7 +91,7 @@ while 1:
             serverSocket.sendto(DNSModified.encode(), ('localhost', 21000))
 
             newMsg, clientAddress = serverSocket.recvfrom(2048)
-            modifiedMessage.decode()
+            newMsg.decode()
             
             break
             
