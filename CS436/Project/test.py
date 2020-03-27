@@ -22,7 +22,7 @@ if not message in RRTable.values():
   RRTable[key].append(serverAddress)
   RRTable[key].append(60)
   RRTable[key].append()
-  count += 0
+  count += 1
 
 clientSocket.close()
 
