@@ -33,13 +33,13 @@ while Flag:
             print("\n")
             print("Name\t\tType\t\tValue\t\tTTL\t\tStatic")
             for x in range(len(RRTableName)):
-                print(RRTableName[x] +  "\t\t" + RRTableType[x])
+                print(RRTableName[x] +  "\t\t" + RRTableType[x] + "\t\t" + RRTableValue[x])
                
             
             
         else:
             clientSocket.sendto(name.encode(), (serverName, serverPort))
             DNSResponse, serverAddress = clientSocket.recvfrom(2048)
-            RRTableName.append(DNSResponse.decode())
+            print(DNSResponse.decode())
             print('{the_name} has been added.'.format(the_name = name))
 
