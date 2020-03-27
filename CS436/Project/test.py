@@ -16,7 +16,7 @@ modifiedMessage, serverAddress = clientSocket.recvfrom(2048)
 print(modifiedMessage.decode())
 
 if not message in RRTable.values():
-  RRTable[key].append('number ', count)
+  RRTable[key].append(count)
   RRTable[key].append(message)
   RRTable[key].append(message2)
   RRTable[key].append(serverAddress)
