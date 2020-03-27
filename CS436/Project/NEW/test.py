@@ -4,7 +4,7 @@ import logging
 import threading
 
 serverName = 'localhost'
-serverPort = 12000
+serverPort = 15000
 clientSocket = socket(AF_INET, SOCK_DGRAM)
 
 class RRValues:
