@@ -68,14 +68,21 @@ RRTable = {
 
 
 
-serverPort = 15000
+
+serverPort = 12000
 serverSocket = socket(AF_INET, SOCK_DGRAM)
 serverSocket.bind(('', serverPort))
 print ('The server is ready to receive')
 while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
-    modifiedMessage = message.decode().upper()
-    for key in RRTable.items():
-        if RRTable[key].Name == message:
-            modifiedMessage = RRTable[key].Value
+    modifiedMessage = message.decode()
+    #print(modifiedMessage)
+    for item in RRTable.values():
+        if(item['Name'] == modifiedMessage):
+            print("Name Found! It's value is " + item['Value'])
+            modifiedMessage = item['Value']
+            print("It is now modified " + modifiedMessage)
+            
+
+    
     serverSocket.sendto(modifiedMessage.encode(), clientAddress)
