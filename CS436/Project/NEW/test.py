@@ -19,19 +19,23 @@ Flag = True
 
 count = 0
 
-def countdown(Table,num):
-    t = 60
+def changeCount(n):
+    global count
+    count += n
+
+def countdown(Table,count):
+    t = 5
     while t:       
         time.sleep(1)
         Table.ttl = t
         t -= 1
     RRTable.pop(0)
-    count -= 1
+    changeCount(-1)
+    return
 
 def contains(sName):
     for x in range(len(RRTable)):
         if RRTable[x].name == sName:
-            print('Its true')
             return True
     return False
 
@@ -60,11 +64,12 @@ while Flag:
             clientSocket.sendto(name.encode(), (serverName, serverPort))
             clientSocket.sendto(DNSQuery.encode(), (serverName, serverPort))
             DNSResponse, serverAddress = clientSocket.recvfrom(2048)
-            newV = RRValues(name,DNSQuery,DNSResponse.decode(),60,1)
-            RRTable.insert(count,newV)
-            x = threading.Thread(target=countdown, args=(RRTable[count],count,))
+            print(DNSResponse.decode())
+            newV = RRValues(name,DNSQuery,DNSResponse.decode(),5,1)
+            RRTable.append(newV)
+            x = threading.Thread(target=countdown, args=(RRTable[count],count))
             x.start()
-            count += 1
+            changeCount(1)
 
             #print('{the_name} has been added.'.format(the_name = name))
 clientSocket.close()
