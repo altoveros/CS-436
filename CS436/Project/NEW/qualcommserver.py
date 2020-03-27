@@ -36,10 +36,6 @@ while 1:
         if(item['Name'] == modifiedMessage and item['Type'] == DNSModified):
             print("Name found! It's value is " + item['Value'])
             modifiedMessage = item['Value']
-            print("it is now modified " + modifiedMessage)
-
-
-    serverSocket.sendto(modifiedMessage.encode(), localserverAddress)
-
+            print("It is now modified " + modifiedMessage)
 
     serverSocket.sendto(modifiedMessage.encode(), localserverAddress)
