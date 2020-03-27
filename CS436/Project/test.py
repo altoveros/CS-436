@@ -4,7 +4,7 @@ import numpy as np
   clientSocket = socket(AF_INET, SOCK_DGRAM)
 
 RRTable{}
-count = 0
+count = 1
 
 message = input('Enter the host or domain name: ')
 
