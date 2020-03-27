@@ -41,6 +41,9 @@ while Flag:
             clientSocket.sendto(name.encode(), (serverName, serverPort))
             DNSResponse, serverAddress = clientSocket.recvfrom(2048)
             print(DNSResponse.decode())
+            RRTableName.append(name)
+            RRTableValue.append(DNSResponse.decode())
+            RRTableType.append(DNSQuery)
 
             #print('{the_name} has been added.'.format(the_name = name))
 clientSocket.close()
