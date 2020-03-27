@@ -73,30 +73,38 @@ serverSocket = socket(AF_INET, SOCK_DGRAM)
 serverSocket.bind(('', serverPort))
 print ('The server is ready to receive')
 while 1:
+    while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
     DNSQuery, clientAddress = serverSocket.recvfrom(2048)
     modifiedMessage = message.decode()
     DNSModified = DNSQuery.decode()
-    print("Received domain name: " + modifiedMessage)
-    print("Received DNS Type: " + DNSModified)
+    Flag = True
     for item in RRTable.values():
-        if(item['Name'] == modifiedMessage and item['Type'] == DNSModified):
+        if(item['Name'] == modifiedMessage and item['Type'] == DNSModified and item['Type'] != 'NS'):
             print("Name Found! It's value is " + item['Value'])
             modifiedMessage = item['Value']
-            print("It is now modified, returning value: " + modifiedMessage)
-            break
+            print("It is now modified " + modifiedMessage)
+            Flag = False
+    if Flag is True:       
+        if contains(modifiedMessage):
+            print("\n")
+            print(modifiedMessage + " already exists, here is the current table")
+            print("\n")
+            print("Name\t\tType\t\tValue\t\tTTL\t\tStatic")
+            for x in range(len(RRTable)):
+                print(tempRR[x].name +  "\t\t" + tempRR[x].htype + "\t\t" + tempRR[x].value +'\t\t' + str(tempRR[x].ttl))
         else:
             print(modifiedMessage + " does not exist in local server table, checking other servers...")
             serverSocket.sendto(modifiedMessage.encode(), ('localhost', 21000))
             serverSocket.sendto(DNSModified.encode(), ('localhost', 21000))
-
-            newMsg, clientAddress = serverSocket.recvfrom(2048)
-            newMsg.decode()
-            
-            break
-            
-
-        
+            DNSResponse, serverAddress = serverSocket.recvfrom(2048)
+            print(DNSResponse.decode())
+            newV = RRValues(modifiedMessage,DNSModified,DNSResponse.decode(),60,1)
+            tempRR.append(newV)
+            x = threading.Thread(target=countdown, args=(tempRR[count],))
+            x.start()
+            changeCount(1)
+            modifiedMessage = DNSResponse.decode()
     serverSocket.sendto(modifiedMessage.encode(), clientAddress)
 
     
