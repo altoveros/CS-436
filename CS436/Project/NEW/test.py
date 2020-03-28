@@ -39,6 +39,11 @@ def contains(sName):
             return True
     return False
 
+def pTable():
+    print("    {:<17} {:<15} {:15} {:<15} {:<5}".format('Name','Type','Value','TTL','Static\n'))
+    for x in range(len(RRTable)):
+        print(x+1,' ',"{:<17} {:<15} {:15} {:<15} {:<5}".format(RRTable[x].name, RRTable[x].htype, RRTable[x].value, str(RRTable[x].ttl), str(RRTable[x].static)))
+
 RRTable = []
 
 while Flag:
@@ -54,22 +59,21 @@ while Flag:
         if contains(name):
             print("\n")
             print(name + " already exists, here is the current table")
-            print("\n")
-            print ("{:<17} {:<25} {:<20} {:<15} {:<10}".format('Name','Type','Value','TTL','Static'))
-            for x in range(len(RRTable)):
-                print("{:<17} {:<25} {:20} {:<15}".format(RRTable[x].name, RRTable[x].htype, RRTable[x].value, str(RRTable[x].ttl)))
-                         
+            pTable()        
             
         else:
+            print("Not in table, sending to LocalDNS...")
             clientSocket.sendto(name.encode(), (serverName, serverPort))
             clientSocket.sendto(DNSQuery.encode(), (serverName, serverPort))
             DNSResponse, serverAddress = clientSocket.recvfrom(2048)
-            print(DNSResponse.decode())
-            newV = RRValues(name,DNSQuery,DNSResponse.decode(),60,1)
-            RRTable.append(newV)
-            x = threading.Thread(target=countdown, args=(RRTable[count],))
-            x.start()
-            changeCount(1)
+            if(DNSResponse.decode() != 'None'):
+                print(DNSResponse.decode())
+                newV = RRValues(name,DNSQuery,DNSResponse.decode(),60,0)
+                RRTable.append(newV)
+                x = threading.Thread(target=countdown, args=(RRTable[count],))
+                x.start()
+                changeCount(1)
+                pTable()
 
             #print('{the_name} has been added.'.format(the_name = name))
 clientSocket.close()
