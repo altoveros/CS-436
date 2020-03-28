@@ -1,4 +1,4 @@
-from socket import *
+from socket import*
 
 viasatRRTable = {
     "number1":
@@ -9,12 +9,13 @@ viasatRRTable = {
         "Value": "8.37.96.179",
         "TTL": "",
         "Static" : "1"
-        },
+        }
+    }
 
 
 serverPort = 22000
-ServerSocket = socket(AF_INET, SOCK_DGRAM)
-ServerSocket.bind(('', serverPort))
+serverSocket = socket(AF_INET, SOCK_DGRAM)
+serverSocket.bind(('', serverPort))
 print ('The server is ready to receive')
 while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
@@ -29,4 +30,6 @@ while 1:
             modifiedMessage = item['Value']
             print("It is now modified " + modifiedMessage)
 
-    serverSocket.sendto(modifiedMessage.encode(), clientAddress)
+    serverSocket.sendto(modifiedMessage.encode(), clientAddress) 
+
+
