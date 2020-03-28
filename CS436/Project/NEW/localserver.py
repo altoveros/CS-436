@@ -63,7 +63,7 @@ RRTable = {
     "number6":
     {
         "TransactionID": "6",
-        "Name": "www.qualcomm.com",
+        "Name": "qualcomm.com",
         "Type": "NS",
         "Value": "dns.qualcomm.com",
         "TTL": "",
