@@ -55,9 +55,9 @@ while Flag:
             print("\n")
             print(name + " already exists, here is the current table")
             print("\n")
-            print("Name\t\tType\t\tValue\t\tTTL\t\tStatic")
+            print ("{:<17} {:<25} {:<20} {:<15} {:<10}".format('Name','Type','Value','TTL','Static'))
             for x in range(len(RRTable)):
-                print(RRTable[x].name +  "\t\t" + RRTable[x].htype + "\t\t" + RRTable[x].value +'\t\t' + str(RRTable[x].ttl))
+                print("{:<17} {:<25} {:20} {:<15}".format(RRTable[x].name, RRTable[x].htype, RRTable[x].value, str(RRTable[x].ttl)))
                          
             
         else:
