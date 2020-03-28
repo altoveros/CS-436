@@ -125,7 +125,19 @@ while 1:
             print("Name\t\tType\t\tValue\t\tTTL\t\tStatic")
             for x in range(len(tempRR)):
                 print(tempRR[x].name +  "\t\t" + tempRR[x].htype + "\t\t" + tempRR[x].value +'\t\t' + str(tempRR[x].ttl))
-        else:
+        elif('viasat.com' in modifiedMessage):
+            print(modifiedMessage + " does not exist in local server table, checking other servers...")
+            serverSocket.sendto(modifiedMessage.encode(), ('localhost', 22000))
+            serverSocket.sendto(DNSModified.encode(), ('localhost', 22000))
+            DNSResponse, serverAddress = serverSocket.recvfrom(2048)
+            print(DNSResponse.decode())
+            newV = RRValues(modifiedMessage,DNSModified,DNSResponse.decode(),60,1)
+            tempRR.append(newV)
+            x = threading.Thread(target=countdown, args=(tempRR[count],))
+            x.start()
+            changeCount(1)
+            modifiedMessage = DNSResponse.decode()
+        else:#(modifiedMessage.find('qualcomm.com')):
             print(modifiedMessage + " does not exist in local server table, checking other servers...")
             serverSocket.sendto(modifiedMessage.encode(), ('localhost', 21000))
             serverSocket.sendto(DNSModified.encode(), ('localhost', 21000))
@@ -137,4 +149,5 @@ while 1:
             x.start()
             changeCount(1)
             modifiedMessage = DNSResponse.decode()
+            
     serverSocket.sendto(modifiedMessage.encode(), clientAddress)
