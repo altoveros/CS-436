@@ -11,6 +11,9 @@ class RRValues:
         self.ttl = ttl
         self.static = static
 
+count = 0
+tempRR = []
+
 RRTable = {
     "number1":
     {
@@ -77,8 +80,6 @@ RRTable = {
         }
     }
 
-count = 0
-tempRR = []
 
 def changeCount(n):
     global count
@@ -91,7 +92,7 @@ def contains(sName):
             return True
     return False
 
-def countdown(Table):
+def countdown(Table,count):
     t = 60
     while t:       
         time.sleep(1)
@@ -101,10 +102,17 @@ def countdown(Table):
     changeCount(-1)
     return
 
+def pTable():
+    print("    {:<17} {:<15} {:15} {:<15} {:<5}".format('Name','Type','Value','TTL','Static\n'))
+    for x in range(len(tempRR)):
+        print(x+1," ","{:<17} {:<15} {:15} {:<15} {:<5}".format(tempRR[x].name, tempRR[x].htype, tempRR[x].value, str(tempRR[x].ttl),str(tempRR[x].static)))
+        
+
 serverPort = 15000
 serverSocket = socket(AF_INET, SOCK_DGRAM)
 serverSocket.bind(('', serverPort))
 print ('The server is ready to receive')
+
 while 1:
     message, clientAddress = serverSocket.recvfrom(2048)
     DNSQuery, clientAddress = serverSocket.recvfrom(2048)
@@ -117,16 +125,15 @@ while 1:
             modifiedMessage = item['Value']
             print("It is now modified " + modifiedMessage)
             Flag = False
-    if Flag is True:       
+    if Flag is True:
         if contains(modifiedMessage):
             print("\n")
             print(modifiedMessage + " already exists, here is the current table")
             print("\n")
-            print("Name\t\tType\t\tValue\t\tTTL\t\tStatic")
-            for x in range(len(tempRR)):
-                print(tempRR[x].name +  "\t\t" + tempRR[x].htype + "\t\t" + tempRR[x].value +'\t\t' + str(tempRR[x].ttl))
+            pTable()
+            
         elif('viasat.com' in modifiedMessage):
-            print(modifiedMessage + " does not exist in local server table, checking other servers...")
+            print(modifiedMessage + " does not exist in local server table, sending to DNS.viasat.com...")
             serverSocket.sendto(modifiedMessage.encode(), ('localhost', 22000))
             serverSocket.sendto(DNSModified.encode(), ('localhost', 22000))
             DNSResponse, serverAddress = serverSocket.recvfrom(2048)
@@ -137,17 +144,25 @@ while 1:
             x.start()
             changeCount(1)
             modifiedMessage = DNSResponse.decode()
-        else:#(modifiedMessage.find('qualcomm.com')):
-            print(modifiedMessage + " does not exist in local server table, checking other servers...")
+            pTable()
+        
+        elif(modifiedMessage.find('qualcomm.com')):
+            print(modifiedMessage + " does not exist in local server table, sending to DNS.qualcomm.com...")
             serverSocket.sendto(modifiedMessage.encode(), ('localhost', 21000))
             serverSocket.sendto(DNSModified.encode(), ('localhost', 21000))
             DNSResponse, serverAddress = serverSocket.recvfrom(2048)
             print(DNSResponse.decode())
-            newV = RRValues(modifiedMessage,DNSModified,DNSResponse.decode(),60,1)
+            newV = RRValues(modifiedMessage,DNSModified,DNSResponse.decode(),60,0)
             tempRR.append(newV)
-            x = threading.Thread(target=countdown, args=(tempRR[count],))
+            x = threading.Thread(target=countdown, args=(tempRR[count],count))
             x.start()
             changeCount(1)
             modifiedMessage = DNSResponse.decode()
+            pTable()
+
+        else:
+            print('No address associated with the name: ', modifiedMessage)
+            modifiedMessage = 'None'
+            
             
     serverSocket.sendto(modifiedMessage.encode(), clientAddress)
