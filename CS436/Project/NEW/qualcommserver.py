@@ -31,8 +31,6 @@ while 1:
     DNSQuery, clientAddress = serverSocket.recvfrom(2048)
     modifiedMessage = message.decode()
     DNSModified = DNSQuery.decode()
-    print(DNSModified)
-    print(modifiedMessage)
     for item in qualcommRRTable.values():
         if(item['Name'] == modifiedMessage and item['Type'] == DNSModified):
             print("Name Found! It's value is " + item['Value'])
